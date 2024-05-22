@@ -1,15 +1,20 @@
 package sortpom;
 
+import java.io.File;
+import java.util.Optional;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
-
-import java.io.File;
+import org.apache.maven.project.MavenProject;
 
 /**
  * Common parent for both SortMojo and VerifyMojo
  */
 abstract class AbstractParentMojo extends AbstractMojo {
+
+    @Parameter(property = "project", readonly=true, required=true)
+    MavenProject mavenProject;
 
     /**
      * This is the File instance that refers to the location of the pom that
@@ -153,6 +158,24 @@ abstract class AbstractParentMojo extends AbstractMojo {
     @Parameter(property = "sort.keepTimestamp", defaultValue = "false")
     boolean keepTimestamp;
 
+    /**
+     * Comma-separated ordered list of plugin group ids to prioritize.
+     */
+    @Parameter(property = "sort.pluginPriorityGroups")
+    protected String pluginPriorityGroups;
+
+    /**
+     * Comma-separated ordered list of dependency group ids to prioritize.
+     */
+    @Parameter(property = "sort.dependencyPriorityGroups")
+    protected String dependencyPriorityGroups;
+
+    /**
+     * Automatically add the local group id to {@link #dependencyPriorityGroups}.
+     */
+    @Parameter(property = "sort.prioritizeLocalGroupId", defaultValue = "false")
+    protected boolean prioritizeLocalGroupId;
+
     final SortPomImpl sortPomImpl = new SortPomImpl();
 
     /**
@@ -175,4 +198,22 @@ abstract class AbstractParentMojo extends AbstractMojo {
     protected abstract void sortPom() throws MojoFailureException;
 
     protected abstract void setup() throws MojoFailureException;
+
+    protected String getDependencyPriorityGroupsRendered() {
+        String dependencyPriorityGroups = Optional.ofNullable(this.dependencyPriorityGroups).orElse("");
+        String groupId = mavenProject.getGroupId();
+        if (prioritizeLocalGroupId && groupId != null && !groupId.trim().isEmpty()) {
+            dependencyPriorityGroups = groupId + "," + dependencyPriorityGroups;
+        }
+        return dependencyPriorityGroups;
+    }
+
+    protected String getPluginPriorityGroupsRendered() {
+        String pluginPriorityGroups = Optional.ofNullable(this.pluginPriorityGroups).orElse("");
+        String groupId = mavenProject.getGroupId();
+        if (prioritizeLocalGroupId && groupId != null && !groupId.trim().isEmpty()) {
+            pluginPriorityGroups = groupId + "," + pluginPriorityGroups;
+        }
+        return pluginPriorityGroups;
+    }
 }

@@ -22,6 +22,7 @@
     <mockito.version>4.2.0</mockito.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf4j.version>2.0.0-alpha5</slf4j.version>
+    <jacoco.version>0.8.7</jacoco.version>
   </properties>
 
   <dependencyManagement>
@@ -182,7 +183,7 @@
           <configuration>
             <!-- for jacoco to analyze integration test runs, the jar-file has to be in the local repository used by the invoker plugin when running tests -->
             <extraArtifacts>
-              <extraArtifact>org.jacoco:org.jacoco.agent:0.8.5:jar:runtime</extraArtifact>
+              <extraArtifact>org.jacoco:org.jacoco.agent:${jacoco.version}:jar:runtime</extraArtifact>
             </extraArtifacts>
             <!-- skip any .mavenrc file to override what the jacoco agent defined in the invoker.mavenOpts variable -->
             <environmentVariables>
@@ -228,7 +229,7 @@
           <!-- Coverage -->
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.7</version>
+          <version>${jacoco.version}</version>
           <configuration>
             <excludes>
               <exclude>**/*HelpMojo.class</exclude>

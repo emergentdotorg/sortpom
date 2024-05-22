@@ -38,7 +38,8 @@ public class VerifyMojo extends AbstractParentMojo {
 
     public void setup() throws MojoFailureException {
         new ExceptionConverter(() -> {
-
+            String dependencyPriorityGroups = getDependencyPriorityGroupsRendered();
+            String pluginPriorityGroups = getPluginPriorityGroupsRendered();
             PluginParameters pluginParameters = PluginParameters.builder()
                     .setPomFile(pomFile)
                     .setFileOutput(createBackupFile, backupFileExtension, violationFilename, keepTimestamp)
@@ -46,7 +47,7 @@ public class VerifyMojo extends AbstractParentMojo {
                     .setFormatting(lineSeparator, expandEmptyElements, spaceBeforeCloseEmptyElement, keepBlankLines)
                     .setIndent(nrOfIndentSpace, indentBlankLines, indentSchemaLocation)
                     .setSortOrder(sortOrderFile, predefinedSortOrder)
-                    .setSortEntities(sortDependencies, sortDependencyExclusions, sortPlugins, sortProperties, sortModules, sortExecutions)
+                    .setSortEntities(sortDependencies, sortDependencyExclusions, sortPlugins, sortProperties, sortModules, sortExecutions, dependencyPriorityGroups, pluginPriorityGroups)
                     .setIgnoreLineSeparators(ignoreLineSeparators)
                     .setVerifyFail(verifyFail, verifyFailOn)
                     .build();

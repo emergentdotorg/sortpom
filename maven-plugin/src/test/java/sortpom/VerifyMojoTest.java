@@ -1,6 +1,7 @@
 package sortpom;
 
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -35,6 +36,7 @@ class VerifyMojoTest {
         mojoHelper.setField("lineSeparator", "\n");
         mojoHelper.setField("verifyFail", "SORT");
         mojoHelper.setField("verifyFailOn", "xmlElements");
+        mojoHelper.setField(new MavenProject());
     }
 
     @Test

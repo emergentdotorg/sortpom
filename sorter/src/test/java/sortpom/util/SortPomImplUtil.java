@@ -1,5 +1,6 @@
 package sortpom.util;
 
+import java.util.Optional;
 import sortpom.parameter.PluginParameters;
 
 import java.io.File;
@@ -39,6 +40,7 @@ public class SortPomImplUtil {
     private File testpom;
     private String violationFile;
     private boolean createBackupFile = true;
+    private String groupId;
 
     private SortPomImplUtil() {
     }
@@ -136,6 +138,11 @@ public class SortPomImplUtil {
             assertThat(testHandler.getInfoLogger().get(index++), startsWith("[INFO] Saving violation report to "));
         }
         return index;
+    }
+
+    public SortPomImplUtil setGroupId(String groupId) {
+        this.groupId = groupId;
+        return this;
     }
 
     public SortPomImplUtil nrOfIndentSpace(int indent) {
@@ -255,13 +262,16 @@ public class SortPomImplUtil {
     }
 
     private PluginParameters getPluginParameters() {
+        String groupId = Optional.ofNullable(this.groupId).orElse("");
+        String prioritizedDependencyGroups = groupId;
+        String prioritizedPluginGroups = groupId;
         return PluginParameters.builder()
                 .setPomFile(testpom)
                 .setFileOutput(createBackupFile, testPomBackupExtension, violationFile, keepTimestamp)
                 .setEncoding(encoding)
                 .setFormatting(lineSeparator, true, false, keepBlankLines)
                 .setIndent(nrOfIndentSpace, indentBLankLines, indentSchemaLocation)
-                .setSortEntities(sortDependencies, sortDependencyExclusions, sortPlugins, sortProperties, sortModules, sortExecutions)
+                .setSortEntities(sortDependencies, sortDependencyExclusions, sortPlugins, sortProperties, sortModules, sortExecutions, prioritizedDependencyGroups, prioritizedPluginGroups)
                 .setSortOrder(customSortOrderFile, predefinedSortOrder)
                 .setVerifyFail(verifyFail, verifyFailOn)
                 .setIgnoreLineSeparators(ignoreLineSeparators)

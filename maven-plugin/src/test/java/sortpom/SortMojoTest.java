@@ -2,6 +2,7 @@ package sortpom;
 
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -31,6 +32,7 @@ class SortMojoTest {
         ReflectionHelper mojoHelper = new ReflectionHelper(sortMojo);
         mojoHelper.setField(sortPom);
         mojoHelper.setField("lineSeparator", "\n");
+        mojoHelper.setField(new MavenProject());
     }
 
     @Test

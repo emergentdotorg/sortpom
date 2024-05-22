@@ -155,6 +155,35 @@ public class PluginParameters {
             return this;
         }
 
+
+        /** Sets if any additional pom file elements should be sorted */
+        public Builder setSortEntities(final String sortDependencies,
+            final String sortDependencyExclusions,
+            final String sortPlugins,
+            final boolean sortProperties,
+            final boolean sortModules,
+            boolean sortExecutions,
+            String prioritizedDependencyGroups,
+            String prioritizedPluginGroups) {
+            this.sortDependencies = new DependencySortOrder(sortDependencies, prioritizedDependencyGroups);
+            this.sortDependencyExclusions = new DependencySortOrder(sortDependencyExclusions);
+            this.sortPlugins = new DependencySortOrder(sortPlugins, prioritizedPluginGroups);
+            this.sortProperties = sortProperties;
+            this.sortModules = sortModules;
+            this.sortExecutions = sortExecutions;
+            return this;
+        }
+
+//        public Builder setGroupId(String groupId) {
+//            this.groupId = groupId;
+//            return this;
+//        }
+//
+//        public Builder setPrioritizeLocalGroupId(boolean prioritizeLocalGroupId) {
+//            this.prioritizeLocalGroupId = prioritizeLocalGroupId;
+//            return this;
+//        }
+
         /** Sets the verify operation behaviour */
         public Builder setVerifyFail(String verifyFail, String verifyFailOn) {
             this.verifyFailType = VerifyFailType.fromString(verifyFail);
@@ -171,8 +200,8 @@ public class PluginParameters {
         /** Build the PluginParameters instance */
         public PluginParameters build() {
             return new PluginParameters(pomFile, createBackupFile, backupFileExtension, violationFilename,
-                    encoding, lineSeparatorUtil, expandEmptyElements, spaceBeforeCloseEmptyElement, keepBlankLines, 
-                    indentCharacters, indentBlankLines, indentSchemaLocation, 
+                    encoding, lineSeparatorUtil, expandEmptyElements, spaceBeforeCloseEmptyElement, keepBlankLines,
+                    indentCharacters, indentBlankLines, indentSchemaLocation,
                     predefinedSortOrder, customSortOrderFile,
                     sortDependencies, sortDependencyExclusions, sortPlugins, sortProperties, sortModules, sortExecutions,
                     verifyFailType, verifyFailOn,
