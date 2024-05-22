@@ -6,7 +6,7 @@
   <!-- Basics -->
   <groupId>com.github.ekryd.sortpom</groupId>
   <artifactId>sortpom-parent</artifactId>
-  <version>3.0.2-SNAPSHOT</version>
+  <version>3.0.1-em-1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>SortPom</name>
   <description>A Maven plugin that sorts the pom.xml file.</description>
