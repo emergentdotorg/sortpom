@@ -1,5 +1,9 @@
 package sortpom;
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -19,6 +23,15 @@ public class SortMojo extends AbstractParentMojo {
   public void setup(SortPomLogger mavenLogger) throws MojoFailureException {
     new ExceptionConverter(
             () -> {
+              var prioGroups =
+                  Optional.ofNullable(priorityGroups).stream()
+                      .flatMap(s -> Arrays.stream(s.split(",")))
+                      .filter(s -> !s.isBlank())
+                      .map(String::trim)
+                      .collect(Collectors.toCollection(LinkedHashSet::new));
+              if (prioritizeProjectGroup) {
+                prioGroups.add(project.getGroupId());
+              }
               var pluginParameters =
                   PluginParameters.builder()
                       .setPomFile(pomFile)
@@ -33,6 +46,7 @@ public class SortMojo extends AbstractParentMojo {
                       .setIndent(nrOfIndentSpace, indentBlankLines, indentSchemaLocation)
                       .setSortOrder(sortOrderFile, predefinedSortOrder)
                       .setSortEntities(
+                          String.join(",", prioGroups),
                           sortDependencies,
                           sortDependencyExclusions,
                           sortDependencyManagement,

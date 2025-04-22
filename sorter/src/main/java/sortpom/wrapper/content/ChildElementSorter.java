@@ -1,5 +1,8 @@
 package sortpom.wrapper.content;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +19,20 @@ public class ChildElementSorter {
   private static final String GROUP_ID_NAME = "GROUPID";
   private static final String EMPTY_PLUGIN_GROUP_ID_VALUE = "org.apache.maven.plugins";
 
+  private final List<String> priorityGroupIds = new ArrayList<>();
+
   private final LinkedHashMap<String, String> childElementTextMappedBySortedNames =
       new LinkedHashMap<>();
 
   public ChildElementSorter(DependencySortOrder dependencySortOrder, List<Element> children) {
+    this(dependencySortOrder, Collections.emptyList(), children);
+  }
+
+  public ChildElementSorter(
+      DependencySortOrder dependencySortOrder,
+      Collection<String> priorityGroupIds,
+      List<Element> children) {
+    this.priorityGroupIds.addAll(priorityGroupIds);
     var childElementNames = dependencySortOrder.getChildElementNames();
 
     childElementNames.forEach(
@@ -53,7 +66,24 @@ public class ChildElementSorter {
     if ("scope".equalsIgnoreCase(key)) {
       return compareScope(text, otherText);
     }
+    if ("groupId".equalsIgnoreCase(key)) {
+      return compareGroupId(text, otherText);
+    }
     return text.compareToIgnoreCase(otherText);
+  }
+
+  private int compareGroupId(String childElementText, String otherChildElementText) {
+    String groupId = getResolvedGroupId(childElementText);
+    String otherGroupId = getResolvedGroupId(otherChildElementText);
+    return groupId.compareToIgnoreCase(otherGroupId);
+  }
+
+  private String getResolvedGroupId(String groupId) {
+    int priority = priorityGroupIds.indexOf(groupId);
+    if (priority < 0) {
+      return groupId;
+    }
+    return String.format("!%02d:%s", priority, groupId);
   }
 
   private int compareScope(String childElementText, String otherChildElementText) {
