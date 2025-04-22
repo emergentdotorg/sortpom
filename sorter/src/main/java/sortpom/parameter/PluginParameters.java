@@ -1,6 +1,10 @@
 package sortpom.parameter;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /** Contains all parameters that are sent to the plugin */
 public class PluginParameters {
@@ -15,6 +19,7 @@ public class PluginParameters {
   public final boolean spaceBeforeCloseEmptyElement;
   public final String predefinedSortOrder;
   public final String customSortOrderFile;
+  public final List<String> priorityGroups;
   public final DependencySortOrder sortDependencies;
   public final DependencySortOrder sortDependencyExclusions;
   public final DependencySortOrder sortDependencyManagement;
@@ -47,6 +52,7 @@ public class PluginParameters {
       boolean indentSchemaLocation,
       String predefinedSortOrder,
       String customSortOrderFile,
+      List<String> priorityGroups,
       DependencySortOrder sortDependencies,
       DependencySortOrder sortDependencyExclusions,
       DependencySortOrder sortDependencyManagement,
@@ -69,6 +75,7 @@ public class PluginParameters {
     this.spaceBeforeCloseEmptyElement = spaceBeforeCloseEmptyElement;
     this.predefinedSortOrder = predefinedSortOrder;
     this.customSortOrderFile = customSortOrderFile;
+    this.priorityGroups = priorityGroups;
     this.sortDependencies = sortDependencies;
     this.sortDependencyExclusions = sortDependencyExclusions;
     this.sortDependencyManagement = sortDependencyManagement;
@@ -106,6 +113,7 @@ public class PluginParameters {
     private boolean spaceBeforeCloseEmptyElement;
     private String predefinedSortOrder;
     private String customSortOrderFile;
+    private List<String> priorityGroups;
     private DependencySortOrder sortDependencies;
     private DependencySortOrder sortDependencyExclusions;
     private DependencySortOrder sortDependencyManagement;
@@ -181,6 +189,7 @@ public class PluginParameters {
 
     /** Sets if any additional pom file elements should be sorted */
     public Builder setSortEntities(
+        final String priorityGroups,
         final String sortDependencies,
         final String sortDependencyExclusions,
         final String sortDependencyManagement,
@@ -188,6 +197,11 @@ public class PluginParameters {
         final boolean sortProperties,
         final boolean sortModules,
         boolean sortExecutions) {
+      this.priorityGroups =
+          Arrays.stream(Optional.ofNullable(priorityGroups).orElse("").split(","))
+              .filter(s -> !s.isBlank())
+              .map(String::trim)
+              .collect(Collectors.toList());
       this.sortDependencies = new DependencySortOrder(sortDependencies);
       this.sortDependencyExclusions = new DependencySortOrder(sortDependencyExclusions);
       this.sortDependencyManagement = new DependencySortOrder(sortDependencyManagement);
@@ -229,6 +243,7 @@ public class PluginParameters {
           indentSchemaLocation,
           predefinedSortOrder,
           customSortOrderFile,
+          priorityGroups,
           sortDependencies,
           sortDependencyExclusions,
           sortDependencyManagement,

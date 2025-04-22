@@ -103,6 +103,14 @@ sortpom:sort
       User property: sort.predefinedSortOrder
       Choose between a number of predefined sort order files.
 
+    prioritizeProjectGroup (Default: false)
+      User property: sort.prioritizeProjectGroup
+      Whether to add the project group id to the priorityGroups list.
+
+    priorityGroups
+      User property: sort.priorityGroups
+      Comma-separated ordered list of group ids to prioritize in sorting.
+
     quiet (Default: false)
       User property: sort.quiet
       Set this to 'true' to disable plugin info output
@@ -232,6 +240,14 @@ sortpom:verify
     predefinedSortOrder (Default: recommended_2008_06)
       User property: sort.predefinedSortOrder
       Choose between a number of predefined sort order files.
+
+    prioritizeProjectGroup (Default: false)
+      User property: sort.prioritizeProjectGroup
+      Whether to add the project group id to the priorityGroups list.
+
+    priorityGroups
+      User property: sort.priorityGroups
+      Comma-separated ordered list of group ids to prioritize in sorting.
 
     quiet (Default: false)
       User property: sort.quiet
