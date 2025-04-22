@@ -4,6 +4,7 @@ import java.io.File;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 import sortpom.logger.MavenLogger;
 import sortpom.logger.SortPomLogger;
 
@@ -78,6 +79,14 @@ abstract class AbstractParentMojo extends AbstractMojo {
   @Parameter(property = "sort.predefinedSortOrder", defaultValue = "recommended_2008_06")
   String predefinedSortOrder;
 
+  /** Whether to add the project group id to the {@link #priorityGroups} list. */
+  @Parameter(property = "sort.prioritizeProjectGroup", defaultValue = "false")
+  boolean prioritizeProjectGroup;
+
+  /** Comma-separated ordered list of group ids to prioritize in sorting. */
+  @Parameter(property = "sort.priorityGroups")
+  String priorityGroups;
+
   /** Custom sort order file. */
   @Parameter(property = "sort.sortOrderFile")
   String sortOrderFile;
@@ -140,6 +149,9 @@ abstract class AbstractParentMojo extends AbstractMojo {
   /** Set this to 'true' to disable plugin info output */
   @Parameter(property = "sort.quiet", defaultValue = "false")
   private boolean quiet;
+
+  @Parameter(property = "project", readonly = true, required = true)
+  MavenProject project;
 
   final SortPomImpl sortPomImpl = new SortPomImpl();
 

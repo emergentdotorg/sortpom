@@ -37,6 +37,7 @@ public class XmlProcessorTestUtil {
   private XmlOutputGenerator xmlOutputGenerator;
   private boolean spaceBeforeCloseEmptyElement = true;
   private boolean sortModules = false;
+  private String priorityGroups;
   private String sortDependencies;
   private String sortPlugins;
   private boolean sortProperties = false;
@@ -93,7 +94,14 @@ public class XmlProcessorTestUtil {
             .setIndent(2, indentBlankLines, false)
             .setSortOrder(predefinedSortOrder + ".xml", null)
             .setSortEntities(
-                sortDependencies, "", null, sortPlugins, sortProperties, sortModules, false)
+                priorityGroups,
+                sortDependencies,
+                "",
+                null,
+                sortPlugins,
+                sortProperties,
+                sortModules,
+                false)
             .build();
 
     String xml;

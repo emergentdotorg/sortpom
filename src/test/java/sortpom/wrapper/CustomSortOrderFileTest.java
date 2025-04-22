@@ -34,6 +34,7 @@ class CustomSortOrderFileTest {
             .setIndent(2, false, false)
             .setSortOrder("src/test/resources/sortOrderFiles/with_newline_tags.xml", null)
             .setSortEntities(
+                "",
                 "scope,groupId,artifactId",
                 "groupId,artifactId",
                 "scope,groupId,artifactId",
