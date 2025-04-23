@@ -1,0 +1,17 @@
+name: Maven Tests # GOLDEN VERSION
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test with Maven
+        uses: emergentdotorg/github-actions/maven-verify@v2
