@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import sortpom.parameter.DependencySortOrder;
 
@@ -79,11 +81,13 @@ public class ChildElementSorter {
   }
 
   private String getResolvedGroupId(String groupId) {
-    int priority = priorityGroupIds.indexOf(groupId);
-    if (priority < 0) {
-      return groupId;
+    for (int ii = 0; ii < priorityGroupIds.size(); ii++) {
+      String pg = priorityGroupIds.get(ii);
+      if (pg.equals(groupId) || StringUtils.startsWith(groupId, pg + ".")) {
+        return String.format("!%02d:%s", ii, groupId);
+      }
     }
-    return String.format("!%02d:%s", priority, groupId);
+    return groupId;
   }
 
   private int compareScope(String childElementText, String otherChildElementText) {
