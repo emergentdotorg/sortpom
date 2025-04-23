@@ -3,20 +3,15 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- Basics -->
-  <groupId>org.emergent.maven.sortpom</groupId>
-  <artifactId>sortpom-parent</artifactId>
+  <groupId>org.emergent.maven.plugins</groupId>
+  <artifactId>sortpom-maven-plugin</artifactId>
   <version>3.4.2-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>SortPom</name>
+  <packaging>maven-plugin</packaging>
+  <name>SortPom Plugin</name>
   <description>A Maven plugin that sorts the pom.xml file.</description>
 
-  <modules>
-    <module>sorter</module>
-    <module>maven-plugin</module>
-  </modules>
-
   <properties>
+    <skipItTests>false</skipItTests>
     <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf4j.version>2.0.12</slf4j.version>
@@ -55,7 +50,19 @@
   </dependencyManagement>
 
   <dependencies>
-    <!-- Common test dependencies -->
+    <dependency>
+      <groupId>org.dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>com.github.ekryd.reflection-utils</groupId>
       <artifactId>reflection-utils</artifactId>
@@ -251,6 +258,49 @@
               <fromFile>misc/welcome.txt</fromFile>
             </configuration>
           </execution>
+          <execution>
+            <id>end</id>
+            <goals>
+              <goal>echo</goal>
+            </goals>
+            <phase>install</phase>
+            <configuration>
+              <message>${line.separator}       To run the plugin directly:${line.separator}       mvn ${project.groupId}:${project.artifactId}:${project.version}:sort${line.separator}</message>
+            </configuration>
+          </execution>
+          <execution>
+            <id>end_description</id>
+            <goals>
+              <goal>echo</goal>
+            </goals>
+            <phase>install</phase>
+            <configuration>
+              <message>${line.separator}       To view description:${line.separator}       mvn help:describe -DgroupId=${project.groupId} -DartifactId=${project.artifactId} -Dversion=${project.version} -Ddetail</message>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!-- See http://maven.apache.org/plugins/maven-invoker-plugin/examples/fast-use.html -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <skipInvocation>${skipItTests}</skipInvocation>
+              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+              <settingsFile>src/it/settings.xml</settingsFile>
+              <scriptVariables>
+                <projectversion>${project.version}</projectversion>
+              </scriptVariables>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -437,6 +487,7 @@
     <system>GitHub</system>
     <url>https://github.com/emergentdotorg/sortpom/issues</url>
   </issueManagement>
+
 
   <!-- Profiles -->
   <profiles>
