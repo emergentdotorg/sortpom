@@ -408,7 +408,7 @@
   </build>
 
   <!-- Misc -->
-  <url>https://github.com/Ekryd/sortpom/</url>
+  <url>https://github.com/emergentdotorg/sortpom/</url>
   <inceptionYear>2009</inceptionYear>
 
   <licenses>
@@ -435,14 +435,14 @@
   </developers>
 
   <scm>
-    <connection>scm:git:https://github.com/Ekryd/sortpom.git</connection>
-    <developerConnection>scm:git:https://github.com/Ekryd/sortpom.git</developerConnection>
-    <url>https://github.com/Ekryd/sortpom</url>
+    <connection>scm:git:https://github.com/emergentdotorg/sortpom.git</connection>
+    <developerConnection>scm:git:https://github.com/emergentdotorg/sortpom.git</developerConnection>
+    <url>https://github.com/emergentdotorg/sortpom</url>
     <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/Ekryd/sortpom/issues</url>
+    <url>https://github.com/emergentdotorg/sortpom/issues</url>
   </issueManagement>
 
   <distributionManagement>
