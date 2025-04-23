@@ -1,0 +1,20 @@
+name: Perform Release # GOLDEN VERSION
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@v4
+      - id: release
+        uses: emergentdotorg/github-actions/maven-release@v2
+        with:
+          deploy-server: 'central'
+          deploy-actor: ${{ secrets.MAVEN_CENTRAL_ACTOR }}
+          deploy-token: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          activate-profiles: 'distribution'

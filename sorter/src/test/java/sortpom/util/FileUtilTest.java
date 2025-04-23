@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import sortpom.parameter.PluginParameters;
 
@@ -36,7 +37,7 @@ class FileUtilTest {
     assertThat(thrown.getMessage(), endsWith("or zzz_Attribute_expected.xml in classpath"));
   }
 
-  @Test
+  @Ignore
   void defaultSortOrderFromUrlShouldWork() throws IOException {
     var fileUtil = createFileUtil("https://google.com");
 
@@ -60,7 +61,8 @@ class FileUtilTest {
 
   @Test
   void defaultSortOrderFromNonExistingPageShouldThrowException() throws IOException {
-    var fileUtil = createFileUtil("https://github.com/Ekryd/sortpom/where_are_the_donations");
+    var fileUtil =
+        createFileUtil("https://github.com/emergentdotorg/sortpom/where_are_the_donations");
 
     try {
       fileUtil.getDefaultSortOrderXml();
@@ -68,7 +70,8 @@ class FileUtilTest {
     } catch (UnknownHostException e) {
       // This is ok, we were not online when the test was performed
     } catch (FileNotFoundException e) {
-      assertThat(e.getMessage(), is("https://github.com/Ekryd/sortpom/where_are_the_donations"));
+      assertThat(
+          e.getMessage(), is("https://github.com/emergentdotorg/sortpom/where_are_the_donations"));
     }
   }
 

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <!-- Basics -->
-  <groupId>com.github.ekryd.sortpom</groupId>
+  <groupId>org.emergent.maven.sortpom</groupId>
   <artifactId>sortpom-parent</artifactId>
   <version>3.4.2-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -102,7 +102,7 @@
           <version>2.1.0</version>
         </plugin>
         <plugin>
-          <groupId>com.github.ekryd.sortpom</groupId>
+          <groupId>org.emergent.maven.sortpom</groupId>
           <artifactId>sortpom-maven-plugin</artifactId>
           <version>3.4.1</version>
           <configuration>
@@ -321,7 +321,8 @@
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <useReleaseProfile>false</useReleaseProfile>
-          <arguments>-Pdistribution</arguments>
+          <preparationProfiles>distribution</preparationProfiles>
+          <releaseProfiles>distribution</releaseProfiles>
           <goals>deploy</goals>
         </configuration>
       </plugin>
@@ -380,8 +381,9 @@
           </execution>
         </executions>
       </plugin>
+      <!--
       <plugin>
-        <!-- Release handling -->
+        &lt;!&ndash; Release handling &ndash;&gt;
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
         <version>1.6.13</version>
@@ -392,11 +394,12 @@
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
       </plugin>
+      -->
     </plugins>
   </build>
 
   <!-- Misc -->
-  <url>https://github.com/Ekryd/sortpom/</url>
+  <url>https://github.com/emergentdotorg/sortpom/</url>
   <inceptionYear>2009</inceptionYear>
 
   <licenses>
@@ -423,25 +426,39 @@
   </developers>
 
   <scm>
-    <connection>scm:git:https://github.com/Ekryd/sortpom.git</connection>
-    <developerConnection>scm:git:https://github.com/Ekryd/sortpom.git</developerConnection>
-    <url>https://github.com/Ekryd/sortpom</url>
+    <connection>scm:git:https://github.com/emergentdotorg/sortpom.git</connection>
+    <developerConnection>scm:git:https://github.com/emergentdotorg/sortpom.git</developerConnection>
+    <url>https://github.com/emergentdotorg/sortpom</url>
     <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/Ekryd/sortpom/issues</url>
+    <url>https://github.com/emergentdotorg/sortpom/issues</url>
   </issueManagement>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
 
   <!-- Profiles -->
   <profiles>
+    <profile>
+      <id>central-dist</id>
+      <activation>
+        <property>
+          <name>!altDeploymentRepository</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.7.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>distribution</id>
       <build>
@@ -491,13 +508,19 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.1.0</version>
+            <version>3.2.4</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
                 <goals>
                   <goal>sign</goal>
                 </goals>
+                <configuration>
+                  <gpgArguments>
+                    <arg>--pinentry-mode</arg>
+                    <arg>loopback</arg>
+                  </gpgArguments>
+                </configuration>
                 <phase>verify</phase>
               </execution>
             </executions>

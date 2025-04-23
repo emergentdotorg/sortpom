@@ -3,7 +3,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.github.ekryd.sortpom.its</groupId>
+  <groupId>org.emergent.maven.sortpom.its</groupId>
   <artifactId>four-spaces-indent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -19,7 +19,7 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.github.ekryd.sortpom</groupId>
+        <groupId>org.emergent.maven.plugins</groupId>
         <artifactId>sortpom-maven-plugin</artifactId>
         <version>@pom.version@</version>
         <executions>
