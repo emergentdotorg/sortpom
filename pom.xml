@@ -333,7 +333,8 @@
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <useReleaseProfile>false</useReleaseProfile>
-          <arguments>-Pdistribution</arguments>
+          <preparationProfiles>distribution</preparationProfiles>
+          <releaseProfiles>distribution</releaseProfiles>
           <goals>deploy</goals>
         </configuration>
       </plugin>
@@ -506,6 +507,9 @@
             <version>3.1.0</version>
             <executions>
               <execution>
+                <configuration>
+                  <skip>true</skip>
+                </configuration>
                 <id>sign-artifacts</id>
                 <goals>
                   <goal>sign</goal>
