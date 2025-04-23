@@ -393,8 +393,9 @@
           </execution>
         </executions>
       </plugin>
+      <!--
       <plugin>
-        <!-- Release handling -->
+        &lt;!&ndash; Release handling &ndash;&gt;
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
         <version>1.6.13</version>
@@ -405,6 +406,7 @@
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
       </plugin>
+      -->
     </plugins>
   </build>
 

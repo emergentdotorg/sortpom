@@ -61,7 +61,8 @@ class FileUtilTest {
 
   @Test
   void defaultSortOrderFromNonExistingPageShouldThrowException() throws IOException {
-    var fileUtil = createFileUtil("https://github.com/emergentdotorg/sortpom/where_are_the_donations");
+    var fileUtil =
+        createFileUtil("https://github.com/emergentdotorg/sortpom/where_are_the_donations");
 
     try {
       fileUtil.getDefaultSortOrderXml();
@@ -69,7 +70,8 @@ class FileUtilTest {
     } catch (UnknownHostException e) {
       // This is ok, we were not online when the test was performed
     } catch (FileNotFoundException e) {
-      assertThat(e.getMessage(), is("https://github.com/emergentdotorg/sortpom/where_are_the_donations"));
+      assertThat(
+          e.getMessage(), is("https://github.com/emergentdotorg/sortpom/where_are_the_donations"));
     }
   }
 
