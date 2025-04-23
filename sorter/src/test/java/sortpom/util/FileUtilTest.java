@@ -37,7 +37,6 @@ class FileUtilTest {
     assertThat(thrown.getMessage(), endsWith("or zzz_Attribute_expected.xml in classpath"));
   }
 
-  @Test
   @Ignore
   void defaultSortOrderFromUrlShouldWork() throws IOException {
     var fileUtil = createFileUtil("https://google.com");
