@@ -3,7 +3,7 @@
   <name>SortPom Plugin :: ITs :: Default configuration</name>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>default-configuration</artifactId>
-  <groupId>com.github.ekryd.sortpom.its</groupId>
+  <groupId>org.emergent.maven.sortpom.its</groupId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Test default parameters of the plugin</description>
@@ -18,7 +18,7 @@
         <artifactId>maven-help-plugin</artifactId>
         <version>3.4.0</version>
         <configuration>
-          <groupId>com.github.ekryd.sortpom</groupId>
+          <groupId>org.emergent.maven.plugins</groupId>
           <artifactId>sortpom-maven-plugin</artifactId>
           <version>@pom.version@</version>
           <detail>true</detail>
