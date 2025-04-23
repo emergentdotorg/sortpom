@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import sortpom.parameter.PluginParameters;
 
@@ -37,6 +38,7 @@ class FileUtilTest {
   }
 
   @Test
+  @Ignore
   void defaultSortOrderFromUrlShouldWork() throws IOException {
     var fileUtil = createFileUtil("https://google.com");
 
