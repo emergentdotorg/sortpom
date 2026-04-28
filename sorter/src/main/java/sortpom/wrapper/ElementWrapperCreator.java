@@ -2,6 +2,7 @@ package sortpom.wrapper;
 
 import static sortpom.wrapper.ElementUtil.*;
 
+import java.util.List;
 import org.dom4j.Element;
 import sortpom.parameter.DependencySortOrder;
 import sortpom.parameter.PluginParameters;
@@ -11,6 +12,7 @@ import sortpom.wrapper.content.*;
  * Create wrappers around xml elements. The wrappers help to sort the XML element among themselves.
  */
 public class ElementWrapperCreator {
+  private List<String> priorityGroups;
   private DependencySortOrder sortDependencies;
   private DependencySortOrder sortDependencyExclusions;
   private DependencySortOrder sortDependencyManagement;
@@ -26,6 +28,7 @@ public class ElementWrapperCreator {
   }
 
   public void setup(PluginParameters pluginParameters) {
+    this.priorityGroups = pluginParameters.priorityGroups;
     this.sortDependencies = pluginParameters.sortDependencies;
     this.sortDependencyExclusions = pluginParameters.sortDependencyExclusions;
     this.sortDependencyManagement = pluginParameters.sortDependencyManagement;
@@ -50,7 +53,7 @@ public class ElementWrapperCreator {
       if (isPluginElement(element)) {
         var pluginSortedWrapper =
             new PluginSortedWrapper(element, elementNameSortOrderMap.getSortOrder(element));
-        pluginSortedWrapper.setSortOrder(sortPlugins);
+        pluginSortedWrapper.setSortOrder(sortPlugins, priorityGroups);
         return pluginSortedWrapper;
       }
       if (isModuleElement(element)) {
@@ -72,9 +75,9 @@ public class ElementWrapperCreator {
     var dependencySortedWrapper =
         new DependencySortedWrapper(element, elementNameSortOrderMap.getSortOrder(element));
     if (isDependencyElementInManagement(element) && !sortDependencyManagement.isNoSorting()) {
-      dependencySortedWrapper.setSortOrder(sortDependencyManagement);
+      dependencySortedWrapper.setSortOrder(sortDependencyManagement, priorityGroups);
     } else {
-      dependencySortedWrapper.setSortOrder(sortDependencies);
+      dependencySortedWrapper.setSortOrder(sortDependencies, priorityGroups);
     }
     return dependencySortedWrapper;
   }

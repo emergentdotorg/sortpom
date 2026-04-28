@@ -1,5 +1,7 @@
 package sortpom.wrapper.content;
 
+import java.util.Collection;
+import java.util.Collections;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import sortpom.parameter.DependencySortOrder;
@@ -24,8 +26,13 @@ public class DependencySortedWrapper extends SortedWrapper {
   }
 
   public void setSortOrder(DependencySortOrder childElementNames) {
+    setSortOrder(childElementNames, Collections.emptyList());
+  }
+
+  public void setSortOrder(
+      DependencySortOrder childElementNames, Collection<String> priorityGroupIds) {
     var children = getContent().elements();
-    this.childElementSorter = new ChildElementSorter(childElementNames, children);
+    this.childElementSorter = new ChildElementSorter(childElementNames, priorityGroupIds, children);
   }
 
   @Override

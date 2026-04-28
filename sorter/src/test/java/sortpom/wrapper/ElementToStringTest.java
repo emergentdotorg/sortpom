@@ -33,6 +33,7 @@ class ElementToStringTest {
             .setIndent(2, false, false, null)
             .setSortOrder("default_0_4_0.xml", null)
             .setSortEntities(
+                "",
                 "scope,groupId,artifactId",
                 "groupId,artifactId",
                 "scope,groupId,artifactId",

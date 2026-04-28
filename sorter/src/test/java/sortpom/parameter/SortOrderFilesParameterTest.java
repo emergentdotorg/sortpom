@@ -2,8 +2,8 @@ package sortpom.parameter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.Is.isA;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -53,7 +53,7 @@ class SortOrderFilesParameterTest {
 
     var thrown = assertThrows(RuntimeException.class, testMethod).getCause().getCause();
 
-    assertThat(thrown, isA(FailureException.class));
+    assertThat(thrown, is(instanceOf(FailureException.class)));
     assertThat(thrown.getMessage(), endsWith("VERYdifferentOrder.xml in classpath"));
   }
 
@@ -68,7 +68,7 @@ class SortOrderFilesParameterTest {
 
     var thrown = assertThrows(RuntimeException.class, testMethod).getCause().getCause();
 
-    assertThat(thrown, isA(IllegalArgumentException.class));
+    assertThat(thrown, is(instanceOf(IllegalArgumentException.class)));
     assertThat(
         thrown.getMessage(),
         is(equalTo("Cannot find abbie_normal_brain.xml among the predefined plugin resources")));
