@@ -3,6 +3,7 @@ package sortpom.util;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static sortpom.util.SortPomImplUtil.PREFIX;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -48,7 +49,7 @@ public class XmlProcessorTestUtil {
   private XmlProcessorTestUtil() {}
 
   public void testInputAndExpected(String inputFileName, String expectedFileName) {
-    try (var fileInputStream = new FileInputStream(expectedFileName)) {
+    try (var fileInputStream = new FileInputStream(PREFIX + expectedFileName)) {
       var actual = sortXmlAndReturnResult(inputFileName);
       var expected = new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8);
 
@@ -59,19 +60,19 @@ public class XmlProcessorTestUtil {
   }
 
   public String sortXmlAndReturnResult(String inputFileName) {
-    setup(inputFileName);
+    setup(PREFIX + inputFileName);
     xmlProcessor.sortXml();
     return xmlOutputGenerator.getSortedXml(xmlProcessor.getNewDocument());
   }
 
   public void testVerifyXmlIsOrdered(String inputFileName) {
-    setup(inputFileName);
+    setup(PREFIX + inputFileName);
     xmlProcessor.sortXml();
     assertTrue(xmlProcessor.isXmlOrdered().isOrdered());
   }
 
   public void testVerifyXmlIsNotOrdered(String inputFileName, String infoMessage) {
-    setup(inputFileName);
+    setup(PREFIX + inputFileName);
     xmlProcessor.sortXml();
     var xmlOrdered = xmlProcessor.isXmlOrdered();
     assertFalse(xmlOrdered.isOrdered());

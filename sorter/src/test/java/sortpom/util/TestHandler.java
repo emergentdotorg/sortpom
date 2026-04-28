@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static sortpom.util.SortPomImplUtil.PREFIX;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,8 +45,8 @@ class TestHandler {
       String inputResourceFileName,
       String expectedResourceFileName,
       PluginParameters pluginParameters) {
-    this.inputResourceFileName = "src/test/resources/" + inputResourceFileName;
-    this.expectedResourceFileName = "src/test/resources/" + expectedResourceFileName;
+    this.inputResourceFileName = PREFIX + "src/test/resources/" + inputResourceFileName;
+    this.expectedResourceFileName = PREFIX + "src/test/resources/" + expectedResourceFileName;
     this.pluginParameters = pluginParameters;
     this.encoding = pluginParameters.encoding;
     this.testpom = pluginParameters.pomFile;

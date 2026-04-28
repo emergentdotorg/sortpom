@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static sortpom.util.SortPomImplUtil.PREFIX;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -23,7 +24,7 @@ class SortOrderTest {
   @Test
   void testSortDifferentRelativePath() {
     SortPomImplUtil.create()
-        .customSortOrderFile("src/test/resources/difforder/differentOrder.xml")
+        .customSortOrderFile(PREFIX + "src/test/resources/difforder/differentOrder.xml")
         .testFiles("/full_unsorted_input.xml", "/full_differentorder_expected.xml");
   }
 

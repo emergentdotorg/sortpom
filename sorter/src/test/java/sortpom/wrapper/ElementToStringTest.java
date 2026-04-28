@@ -1,6 +1,7 @@
 package sortpom.wrapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static sortpom.util.SortPomImplUtil.PREFIX;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -16,7 +17,7 @@ class ElementToStringTest {
   @Test
   void testToString() throws Exception {
     try (var fileInputStream =
-        new FileInputStream("src/test/resources/Real1_expected_toString.txt")) {
+        new FileInputStream(PREFIX + "src/test/resources/Real1_expected_toString.txt")) {
       var expected = new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8);
       assertEquals(expected, getToStringOnRootElementWrapper());
     }
@@ -45,7 +46,8 @@ class ElementToStringTest {
     fileUtil.setup(pluginParameters);
 
     String xml;
-    try (var fileInputStream = new FileInputStream("src/test/resources/" + "Real1_input.xml")) {
+    try (var fileInputStream =
+        new FileInputStream(PREFIX + "src/test/resources/" + "Real1_input.xml")) {
       xml = new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8);
     }
     var parser = new SAXReader();

@@ -34,7 +34,7 @@
         <version>3.3.2</version>
       </plugin>
       <plugin>
-        <groupId>com.github.ekryd.sortpom</groupId>
+        <groupId>org.emergent.maven.plugins</groupId>
         <artifactId>sortpom-maven-plugin</artifactId>
         <version>@pom.version@</version>
         <executions>

@@ -1,6 +1,7 @@
 package sortpom.wrapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static sortpom.util.SortPomImplUtil.PREFIX;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,7 +18,8 @@ class CustomSortOrderFileTest {
   @Test
   void compareDefaultSortOrderFileToString() throws Exception {
     try (var fileInputStream =
-        new FileInputStream("src/test/resources/sortOrderFiles/with_newline_tagsToString.txt")) {
+        new FileInputStream(
+            PREFIX + "src/test/resources/sortOrderFiles/with_newline_tagsToString.txt")) {
       var expected = new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8);
       assertEquals(expected, getToStringOnCustomSortOrderFile());
     }
@@ -32,7 +34,7 @@ class CustomSortOrderFileTest {
             .setEncoding("UTF-8")
             .setFormatting("\r\n", true, true, true, true)
             .setIndent(2, false, false, null)
-            .setSortOrder("src/test/resources/sortOrderFiles/with_newline_tags.xml", null)
+            .setSortOrder(PREFIX + "src/test/resources/sortOrderFiles/with_newline_tags.xml", null)
             .setSortEntities(
                 "scope,groupId,artifactId",
                 "groupId,artifactId",

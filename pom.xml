@@ -4,17 +4,19 @@
   <modelVersion>4.0.0</modelVersion>
 
   <!-- Basics -->
-  <groupId>com.github.ekryd.sortpom</groupId>
-  <artifactId>sortpom-parent</artifactId>
-  <version>4.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>SortPom</name>
+  <groupId>org.emergent.maven.plugins</groupId>
+  <artifactId>sortpom-maven-plugin</artifactId>
+  <version>4.0.0.1-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
+  <name>SortPom Plugin</name>
   <description>A Maven plugin that sorts the pom.xml file.</description>
 
+  <!--
   <modules>
     <module>sorter</module>
     <module>maven-plugin</module>
   </modules>
+  -->
 
   <properties>
     <argLine>-XX:+EnableDynamicAgentLoading</argLine>
@@ -35,7 +37,7 @@
       <dependency>
         <groupId>org.dom4j</groupId>
         <artifactId>dom4j</artifactId>
-        <version>2.1.4</version>
+        <version>2.2.0</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
@@ -54,6 +56,23 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+    </dependency>
     <!-- Common test dependencies -->
     <dependency>
       <groupId>com.github.ekryd.reflection-utils</groupId>
@@ -70,6 +89,11 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -95,6 +119,22 @@
   <build>
     <defaultGoal>install</defaultGoal>
 
+    <sourceDirectory>sorter/src/main/java</sourceDirectory>
+    <testSourceDirectory>sorter/src/test/java</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>maven-plugin/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>sorter/src/main/resources</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>sorter/src/test/resources</directory>
+      </testResource>
+    </testResources>
+
     <pluginManagement>
       <plugins>
         <plugin>
@@ -105,7 +145,7 @@
         <plugin>
           <groupId>com.github.ekryd.sortpom</groupId>
           <artifactId>sortpom-maven-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>4.0.0</version>
           <configuration>
             <createBackupFile>false</createBackupFile>
             <predefinedSortOrder>custom_1</predefinedSortOrder>
@@ -152,13 +192,13 @@
           <!-- Define versions for standard plugins -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.1.4</version>
         </plugin>
         <plugin>
           <!-- Define versions for standard plugins -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.1.4</version>
         </plugin>
         <plugin>
           <!-- Used for Maven integration testing -->
@@ -237,6 +277,37 @@
 
     <plugins>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.1</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>maven-plugin/src/main/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <compilerArgs>
+            <!-- Disables annotation processing since it is not needed for the plugin.
+             The 'maven-plugin-api' dependency contains a bunch of old annotation processors
+             that causes compiler warnings otherwise -->
+            <arg>-proc:none</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>com.github.ekryd.echo-maven-plugin</groupId>
         <artifactId>echo-maven-plugin</artifactId>
         <inherited>false</inherited>
@@ -248,6 +319,29 @@
             </goals>
             <configuration>
               <fromFile>misc/welcome.txt</fromFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!-- See http://maven.apache.org/plugins/maven-invoker-plugin/examples/fast-use.html -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <projectsDirectory>maven-plugin/src/it</projectsDirectory>
+              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+              <settingsFile>maven-plugin/src/it/settings.xml</settingsFile>
+              <scriptVariables>
+                <projectversion>${project.version}</projectversion>
+              </scriptVariables>
             </configuration>
           </execution>
         </executions>
@@ -318,12 +412,14 @@
         <!-- Release management -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.3.1</version>
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <useReleaseProfile>false</useReleaseProfile>
+          <!--
           <arguments>-Pdistribution</arguments>
           <goals>deploy</goals>
+          -->
         </configuration>
       </plugin>
       <plugin>
@@ -381,8 +477,9 @@
           </execution>
         </executions>
       </plugin>
+      <!--
       <plugin>
-        <!-- Release handling -->
+        &lt;!&ndash; Release handling &ndash;&gt;
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
         <version>1.6.13</version>
@@ -393,6 +490,7 @@
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
       </plugin>
+      -->
     </plugins>
   </build>
 
@@ -424,14 +522,14 @@
   </developers>
 
   <scm>
-    <connection>scm:git:https://github.com/Ekryd/sortpom.git</connection>
-    <developerConnection>scm:git:https://github.com/Ekryd/sortpom.git</developerConnection>
-    <url>https://github.com/Ekryd/sortpom</url>
+    <connection>scm:git:https://github.com/emergentdotorg/sortpom.git</connection>
+    <developerConnection>scm:git:https://github.com/emergentdotorg/sortpom.git</developerConnection>
+    <url>https://github.com/emergentdotorg/sortpom</url>
     <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/Ekryd/sortpom/issues</url>
+    <url>https://github.com/emergentdotorg/sortpom/issues</url>
   </issueManagement>
 
   <distributionManagement>
@@ -443,6 +541,27 @@
 
   <!-- Profiles -->
   <profiles>
+    <profile>
+      <id>central-dist</id>
+      <activation>
+        <property>
+          <name>!altDeploymentRepository</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.10.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>distribution</id>
       <build>
@@ -471,7 +590,7 @@
                 <goals>
                   <goal>jar</goal>
                 </goals>
-                <phase>verify</phase>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
@@ -485,14 +604,14 @@
                 <goals>
                   <goal>jar-no-fork</goal>
                 </goals>
-                <phase>verify</phase>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.2.4</version>
+            <version>3.2.8</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -500,6 +619,9 @@
                   <goal>sign</goal>
                 </goals>
                 <phase>verify</phase>
+                <configuration>
+                  <signer>bc</signer>
+                </configuration>
               </execution>
             </executions>
           </plugin>

@@ -1,0 +1,23 @@
+name: Maven Tests
+
+run-name: Maven Tests on branch ${{ github.ref_name }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test with Maven
+        uses: emergentdotorg/github-actions/maven-verify@v3
+        with:
+          activate-profiles: ''

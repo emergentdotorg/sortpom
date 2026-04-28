@@ -15,6 +15,8 @@ import sortpom.parameter.PluginParameters;
 /** Test utility to enter sort parameters */
 public class SortPomImplUtil {
 
+  public static final String PREFIX = "sorter/";
+
   private TestHandler testHandler;
 
   private String customSortOrderFile;
@@ -27,7 +29,7 @@ public class SortPomImplUtil {
   private boolean sortExecutions = false;
   private String predefinedSortOrder = "recommended_2008_06";
   private String lineSeparator = "\r\n";
-  private String testPomFileName = "src/test/resources/testpom.xml";
+  private String testPomFileName = PREFIX + "src/test/resources/testpom.xml";
   private String testPomBackupExtension = ".testExtension";
 
   private int nrOfIndentSpace = 2;

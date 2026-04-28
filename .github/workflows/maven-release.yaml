@@ -1,0 +1,24 @@
+name: Perform Release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@v4
+      - id: release
+        uses: emergentdotorg/github-actions/maven-release@v3
+        with:
+          java-version: 11
+          deploy-server: 'central'
+          maven-profiles: 'distribution'
+          deploy-actor: ${{ secrets.DEPLOY_CENTRAL_ACTOR }}
+          deploy-token: ${{ secrets.DEPLOY_CENTRAL_TOKEN }}
+          gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          gpg-private-key: ${{ secrets.MAVEN_GPG_KEY }}
