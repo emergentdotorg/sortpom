@@ -26,6 +26,7 @@ public class SortPomImplUtil {
   private boolean sortModules = false;
   private boolean sortExecutions = false;
   private String predefinedSortOrder = "recommended_2008_06";
+  private String priorityGroupIds = "";
   private String lineSeparator = "\r\n";
   private String testPomFileName = "src/test/resources/testpom.xml";
   private String testPomBackupExtension = ".testExtension";
@@ -234,6 +235,11 @@ public class SortPomImplUtil {
     return this;
   }
 
+  public SortPomImplUtil priorityGroupIds(String priorityGroupIds) {
+    this.priorityGroupIds = priorityGroupIds;
+    return this;
+  }
+
   public SortPomImplUtil lineSeparator(String lineSeparator) {
     this.lineSeparator = lineSeparator;
     return this;
@@ -296,6 +302,7 @@ public class SortPomImplUtil {
         .setFormatting(lineSeparator, true, false, keepBlankLines, true)
         .setIndent(nrOfIndentSpace, indentBLankLines, indentSchemaLocation, indentAttribute)
         .setSortEntities(
+            priorityGroupIds,
             sortDependencies,
             sortDependencyExclusions,
             sortDependencyManagement,
